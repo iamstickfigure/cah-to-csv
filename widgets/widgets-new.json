@@ -106,7 +106,7 @@
                     "w": 99.98711913105247,
                     "h": 24.29359952423941,
                     "valueType": "static",
-                    "value": "https://i.imgur.com/7HDBcsx.png"
+                    "value": "https://raw.githubusercontent.com/iamstickfigure/cah-to-csv/master/img/cah-white.png"
                 },
                 {
                     "type": "text",
@@ -234,7 +234,7 @@
                     "w": 99.98711913105247,
                     "h": 24.29359952423941,
                     "valueType": "static",
-                    "value": "https://i.imgur.com/z3igDTC.png",
+                    "value": "https://raw.githubusercontent.com/iamstickfigure/cah-to-csv/master/img/cah-black.png",
                     "color": "#1e1e1e"
                 },
                 {
