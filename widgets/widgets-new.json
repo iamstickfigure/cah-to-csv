@@ -1,0 +1,323 @@
+{
+    "hand": {
+        "id": "hand",
+        "type": "hand",
+        "x": 50,
+        "y": 820,
+        "z": 1
+    },
+    "44852961-a936-427c-ba27-c00c26eadbfa": {
+        "type": "cardPile",
+        "x": 22,
+        "y": 536,
+        "width": 148,
+        "height": 198,
+        "label": "Player 3",
+        "z": 610,
+        "id": "44852961-a936-427c-ba27-c00c26eadbfa"
+    },
+    "0bbc149e-e2f6-48c4-a864-ab73a0d12052": {
+        "type": "cardPile",
+        "x": 1430,
+        "y": 536,
+        "width": 148,
+        "height": 198,
+        "label": "Player 6",
+        "z": 613,
+        "id": "0bbc149e-e2f6-48c4-a864-ab73a0d12052"
+    },
+    "cb2a0254-7d4f-4142-a4f9-eca6d8fc27e9": {
+        "type": "cardPile",
+        "x": 1150,
+        "y": 340,
+        "width": 148,
+        "height": 198,
+        "z": 619,
+        "id": "cb2a0254-7d4f-4142-a4f9-eca6d8fc27e9"
+    },
+    "24051193-0f5c-46c0-a3ce-a93b89f36fde": {
+        "type": "cardPile",
+        "x": 22,
+        "y": 50,
+        "width": 148,
+        "height": 198,
+        "label": "Player 1",
+        "z": 608,
+        "id": "24051193-0f5c-46c0-a3ce-a93b89f36fde"
+    },
+    "49572889-7766-4fce-beae-31663aaf7209": {
+        "type": "cardPile",
+        "x": 1430,
+        "y": 50,
+        "width": 148,
+        "height": 198,
+        "label": "Player 4",
+        "z": 611,
+        "id": "49572889-7766-4fce-beae-31663aaf7209"
+    },
+    "c34eebf1-7027-43fa-a3b9-040f9ca02bf0": {
+        "type": "cardPile",
+        "x": 310,
+        "y": 340,
+        "width": 148,
+        "height": 198,
+        "z": 614,
+        "id": "c34eebf1-7027-43fa-a3b9-040f9ca02bf0"
+    },
+    "8eeb14eb-b448-41ba-b98d-b08d29846eca": {
+        "id": "8eeb14eb-b448-41ba-b98d-b08d29846eca",
+        "backTemplate": {
+            "includeBorder": true,
+            "includeRadius": true,
+            "objects": [
+                {
+                    "type": "text",
+                    "x": 9.583132215278923,
+                    "y": 30.481527914106135,
+                    "w": 97.20164609053492,
+                    "fontSize": "20",
+                    "valueType": "static",
+                    "value": "Cards Against Humanity ",
+                    "textAlign": "left",
+                    "textFont": "interstate",
+                    "color": "#000000"
+                }
+            ]
+        },
+        "faceTemplate": {
+            "includeBorder": true,
+            "includeRadius": true,
+            "objects": [
+                {
+                    "type": "text",
+                    "x": 6.285195591497471,
+                    "y": 7.036760796463019,
+                    "w": 130.91433707104648,
+                    "fontSize": "16",
+                    "valueType": "dynamic",
+                    "value": "response",
+                    "textAlign": "left",
+                    "textFont": "interstate"
+                },
+                {
+                    "type": "image",
+                    "x": 3.0551232202972374,
+                    "y": 165.70640047576057,
+                    "w": 99.98711913105247,
+                    "h": 24.29359952423941,
+                    "valueType": "static",
+                    "value": "https://i.imgur.com/7HDBcsx.png"
+                },
+                {
+                    "type": "text",
+                    "x": 27.213262850958248,
+                    "y": 182.46934285024327,
+                    "w": 140,
+                    "fontSize": "6",
+                    "valueType": "dynamic",
+                    "value": "label",
+                    "textAlign": "left",
+                    "textFont": "interstate",
+                    "color": "#000000"
+                }
+            ]
+        },
+        "cardOverlapH": 0,
+        "parent": "39ea539e-e2bd-4e47-b70d-9cb392587eca",
+        "z": 7058,
+        "cardWidth": 140,
+        "dragging": null,
+        "type": "cardDeck",
+        "x": 955,
+        "cardHeight": 190,
+        "cardTypes": {},
+        "y": 99
+    },
+    "bf979401-6ae9-4bd0-be4a-7da5cb260315": {
+        "type": "cardPile",
+        "x": 982,
+        "y": 340,
+        "width": 148,
+        "height": 198,
+        "z": 618,
+        "id": "bf979401-6ae9-4bd0-be4a-7da5cb260315"
+    },
+    "57649d85-ea4e-49d9-9f6b-19bcd93d0be9": {
+        "type": "cardPile",
+        "x": 1135,
+        "y": 55,
+        "z": 607,
+        "label": "Discard",
+        "width": 148,
+        "height": 198,
+        "id": "57649d85-ea4e-49d9-9f6b-19bcd93d0be9"
+    },
+    "39ea539e-e2bd-4e47-b70d-9cb392587eca": {
+        "id": "39ea539e-e2bd-4e47-b70d-9cb392587eca",
+        "type": "cardPile",
+        "x": 942,
+        "y": 55,
+        "z": 5,
+        "hasShuffleButton": true,
+        "width": 148,
+        "height": 198
+    },
+    "c38aaff4-de09-462b-925a-4a501d3077d0": {
+        "type": "cardPile",
+        "x": 814,
+        "y": 340,
+        "width": 148,
+        "height": 198,
+        "z": 617,
+        "id": "c38aaff4-de09-462b-925a-4a501d3077d0"
+    },
+    "0e109254-de56-4a99-aa91-855f1e8d4bd8": {
+        "id": "0e109254-de56-4a99-aa91-855f1e8d4bd8",
+        "backTemplate": {
+            "includeBorder": true,
+            "includeRadius": true,
+            "objects": [
+                {
+                    "type": "image",
+                    "x": 0,
+                    "y": 0,
+                    "w": 140,
+                    "h": 190,
+                    "color": "#1e1e1e",
+                    "valueType": "static",
+                    "value": "/img/blank.png"
+                },
+                {
+                    "type": "text",
+                    "x": 10.306716055817612,
+                    "y": 28.745258106527913,
+                    "w": 98.97789034635395,
+                    "fontSize": "20",
+                    "valueType": "static",
+                    "value": "Cards Against Humanity ",
+                    "textAlign": "left",
+                    "textFont": "interstate",
+                    "color": "#ffffff"
+                }
+            ]
+        },
+        "faceTemplate": {
+            "includeBorder": true,
+            "includeRadius": true,
+            "objects": [
+                {
+                    "type": "image",
+                    "x": 0,
+                    "y": 0,
+                    "w": 140,
+                    "h": 190,
+                    "color": "#1e1e1e",
+                    "valueType": "static",
+                    "value": "/img/blank.png"
+                },
+                {
+                    "type": "text",
+                    "x": 5.666666666666771,
+                    "y": 6.666666666666667,
+                    "w": 134.33333333333323,
+                    "fontSize": "16",
+                    "valueType": "dynamic",
+                    "value": "prompt",
+                    "textAlign": "left",
+                    "textFont": "interstate",
+                    "color": "#ffffff"
+                },
+                {
+                    "type": "image",
+                    "x": 3.0551232202972374,
+                    "y": 165.70640047576057,
+                    "w": 99.98711913105247,
+                    "h": 24.29359952423941,
+                    "valueType": "static",
+                    "value": "https://i.imgur.com/z3igDTC.png",
+                    "color": "#1e1e1e"
+                },
+                {
+                    "type": "text",
+                    "x": 27.213262850958248,
+                    "y": 182.46934285024327,
+                    "w": 140,
+                    "fontSize": "6",
+                    "valueType": "dynamic",
+                    "value": "label",
+                    "textAlign": "left",
+                    "textFont": "interstate",
+                    "color": "#ffffff"
+                }
+            ]
+        },
+        "cardOverlapH": 0,
+        "parent": "d5f9b40f-6bb2-4c49-95b1-0ce39d595fd9",
+        "z": 7057,
+        "cardWidth": 140,
+        "dragging": null,
+        "type": "cardDeck",
+        "x": 338,
+        "cardHeight": 190,
+        "cardTypes": {},
+        "y": 99
+    },
+    "ffac503a-b6d5-4d97-8ef7-d5ed22ced0cf": {
+        "type": "cardPile",
+        "x": 646,
+        "y": 340,
+        "width": 148,
+        "height": 198,
+        "z": 616,
+        "id": "ffac503a-b6d5-4d97-8ef7-d5ed22ced0cf"
+    },
+    "a4a36c80-2520-4c64-9840-e9ea59189fbf": {
+        "type": "cardPile",
+        "x": 478,
+        "y": 340,
+        "width": 148,
+        "height": 198,
+        "z": 615,
+        "id": "a4a36c80-2520-4c64-9840-e9ea59189fbf"
+    },
+    "200ea006-1623-4692-ae0e-4b78e13555b2": {
+        "type": "cardPile",
+        "x": 22,
+        "y": 293,
+        "width": 148,
+        "height": 198,
+        "label": "Player 2",
+        "z": 609,
+        "id": "200ea006-1623-4692-ae0e-4b78e13555b2"
+    },
+    "e5c76c6b-0447-4ada-8b1f-be0c03291753": {
+        "type": "cardPile",
+        "x": 1430,
+        "y": 293,
+        "width": 148,
+        "height": 198,
+        "label": "Player 5",
+        "z": 612,
+        "id": "e5c76c6b-0447-4ada-8b1f-be0c03291753"
+    },
+    "4cefffa4-aebd-413e-9a4d-ae07ef8f2c55": {
+        "type": "cardPile",
+        "x": 520,
+        "y": 55,
+        "z": 3,
+        "width": 148,
+        "height": 198,
+        "id": "4cefffa4-aebd-413e-9a4d-ae07ef8f2c55"
+    },
+    "d5f9b40f-6bb2-4c49-95b1-0ce39d595fd9": {
+        "id": "d5f9b40f-6bb2-4c49-95b1-0ce39d595fd9",
+        "type": "cardPile",
+        "x": 325,
+        "y": 55,
+        "z": 4082,
+        "hasShuffleButton": true,
+        "width": 148,
+        "height": 198,
+        "dragging": null
+    }
+}
