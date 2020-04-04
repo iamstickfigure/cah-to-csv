@@ -12,10 +12,10 @@ const whiteHeader = [
     { id: 'label', title: 'label' },
     { id: 'resp', title: 'response' }
 ]
-const blackCsvWriter = createCsvWriter({ path: 'cah-black.csv', header: blackHeader });
-const whiteCsvWriter = createCsvWriter({ path: 'cah-white.csv', header: whiteHeader });
+const blackCsvWriter = createCsvWriter({ path: 'csv-out/cah-black.csv', header: blackHeader });
+const whiteCsvWriter = createCsvWriter({ path: 'csv-out/cah-white.csv', header: whiteHeader });
 
-async function addJson(path) {
+async function addJson(path, exclude=[]) {
     const cardObj = await fs.readJson(path);
 
     const {
@@ -23,7 +23,9 @@ async function addJson(path) {
     } = cardObj;
 
     for(let deckId of order) {
-        await writeDeck(cardObj, deckId);
+        if(!exclude.includes(deckId)) {
+            await writeDeck(cardObj, deckId);
+        }
     }
 }
 
@@ -103,8 +105,8 @@ function removeTags(prompt) {
 }
 
 async function addDecks() {
-    await addJson('cah-base.json');
-    await addJson('cah-main-exps.json');
+    await addJson('cah-decks/cah-base.json');
+    await addJson('cah-decks/cah-main-exps.json', ['greenbox']);
 }
 
 try {
