@@ -68,6 +68,16 @@ async function writeDeck(cardObj, deckId) {
     ]);
 }
 
+async function addExtraCsv(path, outPath) {
+    if(!(await fs.pathExists(path))) {
+        console.log(`Warning: ${path} does not exist, skipping`).
+        return;
+    }
+
+    const extraCsv = await fs.readFile(path);
+    await fs.appendFile(outPath, extraCsv);
+}
+
 function getLabel(deckName) {
     if(deckName !== "Base Set") {
         return deckName;
@@ -85,7 +95,19 @@ function fixText(text) {
     str = removeTags(str);
     str = decodeHtml(str);
 
+    checkText(str);
+
     return str;
+}
+
+function checkText(text) {
+    let words = text.split(/\W+/g);
+
+    const bigWords = words.filter(w => w.length > 14);
+
+    if(bigWords.length > 0) {
+        console.log(`Warning: Big words detected in "${text}" (Word over 14 chars)`);
+    }
 }
 
 function extendBlanks(prompt) {
@@ -95,7 +117,7 @@ function extendBlanks(prompt) {
 }
 
 function convertBreaks(prompt) {
-    return prompt.replace("<br>", "                         ");
+    return prompt.replace(/<br>/g, "                         ");
 }
 
 function decodeHtml(prompt) {
@@ -110,8 +132,10 @@ async function addDecks() {
     await addJson('cah-decks/cah-base.json');
     await addJson('cah-decks/cah-main-exps.json', ['greenbox']);
 
-    const extraCsv = await fs.readFile('csv-out/cah-coronavirus-white.csv');
-    await fs.appendFile(whiteCsvPath, extraCsv);
+    await addExtraCsv('csv-out/cah-coronavirus-white.csv', whiteCsvPath);
+
+    // These extra house cards are a bunch of inside jokes, so not going to add that to the repo.
+    await addExtraCsv('csv-out/cah-house-white.csv', whiteCsvPath);
 }
 
 addDecks().catch(err => console.log(err));
