@@ -1,0 +1,40 @@
+
+
+{
+    "blackCards": [],
+    "whiteCards": [
+        "Coronavirus.",
+        "COVID-19.",
+        "SARS 2, the sequel.",
+        "Wearing an orange peel as a face mask.",
+        "Garbage bags duct taped over your entire body.",
+        "Quarantine.",
+        "Social Distancing.",
+        "Binge watching disease movies.",
+        "Bug Chasing.",
+        "\"Gift Giving\".",
+        "Coughing on strangers.",
+        "Boomers.",
+        "A coronavirus party.",
+        "Spring break!",
+        "Masturbating all day while \"working from home\".",
+        "A full-body condom.",
+        "Flattening the curve.",
+        "Buying way too much toilet paper for no reason.",
+        "Ordering a bidet.",
+        "Bathing in hand sanitizer.",
+        "A 55 gallon drum of lube.",
+        "Shittens™.",
+        "Lots and lots of sex.",
+        "New York sex parties."
+    ],
+    "covid19": {
+        "name": "The Coronavirus Pack",
+        "black": [],
+        "white": null,
+        "icon": "bug"
+    },
+    "order": [
+        "covid19"
+    ]
+}

@@ -105,4 +105,4 @@ dist
 
 csv-out/cah-black.csv
 csv-out/cah-white.csv
-csv-out/cah-house-white.csv
+cah-decks/cah-house.json
