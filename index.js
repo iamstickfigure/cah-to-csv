@@ -16,6 +16,10 @@ const whiteHeader = [
 ]
 const blackCsvWriter = createCsvWriter({ path: blackCsvPath, header: blackHeader });
 const whiteCsvWriter = createCsvWriter({ path: whiteCsvPath, header: whiteHeader });
+const blacklistP = loadBlacklist();
+
+let blackCsv = [];
+let whiteCsv = [];
 
 const maxCards = 1183;
 let numCards = 0;
@@ -30,12 +34,14 @@ async function addJson(path, exclude=[]) {
 
     for(let deckId of order) {
         if(!exclude.includes(deckId)) {
-            await writeDeck(cardObj, deckId);
+            await convertDeck(cardObj, deckId);
         }
     }
 }
 
-async function writeDeck(cardObj, deckId) {
+async function convertDeck(cardObj, deckId) {
+    const blacklist = await blacklistP;
+
     const {
         blackCards,
         whiteCards,
@@ -47,34 +53,27 @@ async function writeDeck(cardObj, deckId) {
         white
     } = cardObj[deckId];
 
-    let blackCsv = [];
-    let whiteCsv = [];
-
     const label = getLabel(name);
 
     const doBlack = i => {
-        const text = fixBlackText(blackCards[i].text);
+        const text = blackCards[i].text;
 
-        if(dedupe(text)) {
+        if(handleBlacklist(blacklist, text)) {
             blackCsv.push({
                 label: label,
-                prompt: text
+                prompt: fixBlackText(text)
             });
-    
-            numCards++;
         }
     }
 
     const doWhite = i => {
-        const text = fixText(whiteCards[i]);
+        const text = whiteCards[i];
 
-        if(dedupe(text)) {
+        if(handleBlacklist(blacklist, text)) {
             whiteCsv.push({
                 label: label,
-                resp: text
+                resp: fixText(text)
             });
-    
-            numCards++;
         }
     }
 
@@ -100,10 +99,25 @@ async function writeDeck(cardObj, deckId) {
         }
     }
 
-    await Promise.all([
-        blackCsvWriter.writeRecords(blackCsv),
-        whiteCsvWriter.writeRecords(whiteCsv)
-    ]);
+    numCards = blackCsv.length + whiteCsv.length;
+}
+
+function handleBlacklist(blacklist, text) {
+    const logRemove = () => console.log(`Blacklist: ${text}`);
+
+    if(blacklist.fulltextSet[text]) {
+        logRemove(text);
+        return false;
+    }
+
+    for(let ex of blacklist.regex) {
+        if(text.match(new RegExp(ex, 'i'))) {
+            logRemove(text);
+            return false;
+        }
+    }
+
+    return true;
 }
 
 // Deprecated: This function was a mistake. Makes things kind of complicated.
@@ -120,35 +134,64 @@ async function addExtraCsv(path, outPath) {
     await fs.appendFile(outPath, lines.join('\n'));
 }
 
-async function randomRemove(path, numToRemove, keepRegex=null) {
-    const csv = await fs.readFile(path);
-    const lines = csv.toString().split("\n").filter(line => line.length > 0);
-    const numLines = lines.length;
-    let removalSet = {};
+async function loadBlacklist() {
+    const json = await fs.readJson('blacklist.json');
+    
+    const { regex, fulltext } = json;
+    const fulltextSet = {};
 
-    for(let i = 0; i < numToRemove;) {
-        const rand = Math.floor(Math.random() * (numLines-1)) + 1;
+    for(let text of fulltext) {
+        fulltextSet[text] = true;
+    }
 
-        if(rand > 0 && rand < numLines && !removalSet[rand]) {
-            if(!keepRegex || !lines[rand].match(keepRegex)) {
-                removalSet[rand] = true;
-                i++;
-            }
+    return {
+        fulltextSet,
+        fulltext,
+        regex
+    };
+}
+
+function randomRemove(numBlack, numWhite) {
+    let removalSetB = {};
+    let removalSetW = {};
+
+    for(let i = 0; i < numBlack;) {
+        const rand = Math.floor(Math.random() * blackCsv.length);
+
+        if(!removalSetB[rand]) {
+            removalSetB[rand] = true;
+            i++;
         }
     }
 
-    const filtered = lines.filter((val, i) => {
-        if(removalSet[i]) {
-            console.log(`Randomly removing: ${val}`);
+    for(let i = 0; i < numWhite;) {
+        const rand = Math.floor(Math.random() * whiteCsv.length);
+
+        if(!removalSetW[rand]) {
+            removalSetW[rand] = true;
+            i++;
+        }
+    }
+
+    blackCsv = blackCsv.filter((val, i) => {
+        if(removalSetB[i]) {
+            console.log(`Randomly removing: ${JSON.stringify(val)}`);
             return false;
         }
 
         return true;
     });
 
-    await fs.writeFile(path, filtered.join('\n'));
+    whiteCsv = whiteCsv.filter((val, i) => {
+        if(removalSetW[i]) {
+            console.log(`Randomly removing: ${JSON.stringify(val)}`);
+            return false;
+        }
 
-    numCards -= numToRemove;
+        return true;
+    });
+
+    numCards = blackCsv.length + whiteCsv.length;
 }
 
 function getLabel(deckName) {
@@ -157,6 +200,13 @@ function getLabel(deckName) {
     }
 
     return "";
+}
+
+function dedupeAll() {
+    blackCsv = blackCsv.filter(card => dedupe(card.prompt));
+    whiteCsv = whiteCsv.filter(card => dedupe(card.resp));
+
+    numCards = blackCsv.length + whiteCsv.length;
 }
 
 function dedupe(text) {
@@ -193,7 +243,7 @@ function fixText(text) {
 function checkText(text) {
     let words = text.split(/\W+/g);
 
-    const bigWords = words.filter(w => w.length > 14);
+    const bigWords = words.filter(w => w.length > 15);
 
     if(bigWords.length > 0) {
         console.log(`Warning: Big words detected in "${text}" (Word over 14 chars)`);
@@ -223,22 +273,31 @@ async function addDecks() {
     await addJson('cah-decks/cah-main-exps.json', [
         // 'greenbox', 
         // 'CAHe6', 
-        'CAHe5', 
+        // 'CAHe5', 
         // 'CAHe4', 
         // 'CAHe3', 
         // 'CAHe2',
-        'CAHe1',
+        // 'CAHe1',
     ]);
     await addJson('cah-decks/cah-sci-food.json', ['science']);
     await addJson('cah-decks/cah-fant-www.json');
 
-    await addJson('cah-decks/cah-coronavirus.json');
-    await addJson('cah-decks/cah-house.json'); // These extra house cards are a bunch of inside jokes, so not going to add that to the repo.
+    // Randomly remove cards from the previous decks, then afterwards, add decks that we want to keep in full.
+    randomRemove(200, 200);
 
-    await randomRemove('csv-out/cah-black.csv', 136);
-    await randomRemove('csv-out/cah-white.csv', 50, /coronavirus pack|house cards/i);
+    await addJson('cah-decks/cah-coronavirus.json');
+
+    // These extra custom decks are a bunch of inside jokes or hand-picked from already created decks, so not going to add that to the repo.
+    await addJson('cah-decks-custom/cah-house.json');
+
+    dedupeAll();
 
     console.log(`${numCards} cards ${numCards > maxCards ? '(over limit)' : ''}`);
+
+    await Promise.all([
+        blackCsvWriter.writeRecords(blackCsv),
+        whiteCsvWriter.writeRecords(whiteCsv)
+    ]);
 }
 
 addDecks().catch(err => console.log(err));

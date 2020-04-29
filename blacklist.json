@@ -1,0 +1,8 @@
+{
+    "fulltext": [
+        "While the United States raced the Soviet Union to the moon, the Mexican government funneled millions of pesos into research on _."
+    ],
+    "regex": [
+        ".*waste.*hillary clinton.*time.*"
+    ]
+}
