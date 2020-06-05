@@ -3,6 +3,10 @@
         "While the United States raced the Soviet Union to the moon, the Mexican government funneled millions of pesos into research on _."
     ],
     "regex": [
-        ".*waste.*hillary clinton.*time.*"
+        ".*waste.*hillary clinton.*time.*",
+        ".*hannah montana struggles.*",
+        ".*never fit in until.*",
+        ".*social elite.*thousands of dollars.*",
+        ".*lsd.*really bad time.*"
     ]
 }

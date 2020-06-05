@@ -279,16 +279,19 @@ async function addDecks() {
         // 'CAHe2',
         // 'CAHe1',
     ]);
-    await addJson('cah-decks/cah-sci-food.json', ['science']);
+    await addJson('cah-decks/cah-sci-food.json');
     await addJson('cah-decks/cah-fant-www.json');
+    await addJson('cah-decks/cah-reject.json');
+    await addJson('cah-decks/cah-crabs.json');
 
     // Randomly remove cards from the previous decks, then afterwards, add decks that we want to keep in full.
-    randomRemove(200, 200);
+    randomRemove(300, 700);
 
     await addJson('cah-decks/cah-coronavirus.json');
 
     // These extra custom decks are a bunch of inside jokes or hand-picked from already created decks, so not going to add that to the repo.
     await addJson('cah-decks-custom/cah-house.json');
+    await addJson('cah-decks-custom/cah-doc-edit.json');
 
     dedupeAll();
 
