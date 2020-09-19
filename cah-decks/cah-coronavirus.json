@@ -5,12 +5,20 @@
         {
             "text": "What's the new coronavirus symptom?",
             "pick": 1
+        },
+        {
+            "text": "I thought 2020 couldn't get any worse until _.",
+            "pick": 1
+        },
+        {
+            "text": "What is 2020's kink?",
+            "pick": 1
         }
     ],
     "whiteCards": [
         "Coronavirus.",
         "COVID-19.",
-        "SARS 2, the sequel.",
+        "SARS 2, Electric Boogaloo.",
         "Wearing an orange peel as a face mask.",
         "Garbage bags duct taped over your entire body.",
         "Quarantine.",
@@ -32,7 +40,10 @@
         "Shittens™.",
         "Lots and lots of sex.",
         "New York sex parties.",
-        "Injecting disinfectant."
+        "Injecting disinfectant.",
+        "The Rona.",
+        "2020.",
+        "Dick on a stick."
     ],
     "covid19": {
         "name": "The Coronavirus Pack",

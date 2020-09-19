@@ -17,12 +17,15 @@ const whiteHeader = [
 const blackCsvWriter = createCsvWriter({ path: blackCsvPath, header: blackHeader });
 const whiteCsvWriter = createCsvWriter({ path: whiteCsvPath, header: whiteHeader });
 const blacklistP = loadBlacklist();
+const recentlyUsedP = loadRecentlyUsed();
 
 let blackCsv = [];
 let whiteCsv = [];
 
 const maxCards = 1183;
 let numCards = 0;
+let numCardsBlack = 0;
+let numCardsWhite = 0;
 let deduplicator = {};
 
 async function addJson(path, exclude=[]) {
@@ -99,7 +102,8 @@ async function convertDeck(cardObj, deckId) {
         }
     }
 
-    numCards = blackCsv.length + whiteCsv.length;
+    numCardsBlack = blackCsv.length;
+    numCardsWhite = whiteCsv.length;
 }
 
 function handleBlacklist(blacklist, text) {
@@ -151,6 +155,17 @@ async function loadBlacklist() {
     };
 }
 
+async function loadRecentlyUsed() {
+    const used = await fs.readJson('recently-used.json');
+    const usedSet = {};
+
+    for(let text of used) {
+        usedSet[text] = true;
+    }
+
+    return { used, usedSet };
+}
+
 function randomRemove(numBlack, numWhite) {
     let removalSetB = {};
     let removalSetW = {};
@@ -191,7 +206,101 @@ function randomRemove(numBlack, numWhite) {
         return true;
     });
 
-    numCards = blackCsv.length + whiteCsv.length;
+    numCardsBlack = blackCsv.length;
+    numCardsWhite = whiteCsv.length;
+}
+
+async function randomChoose(numBlack, numWhite, repeatBlack=true, repeatWhite=true) {
+    let keepSetB = {};
+    let keepSetW = {};
+
+    const {
+        usedSet: recentlyUsed,
+        used: recentlyUsedJson
+    } = await recentlyUsedP;
+
+    const checkRecentB = index => {
+        if(!repeatBlack) {
+            return recentlyUsed[blackCsv[index].prompt];
+        }
+
+        return false;
+    }
+
+    const checkRecentW = index => {
+        if(!repeatWhite) {
+            return recentlyUsed[whiteCsv[index].resp];
+        }
+
+        return false;
+    }
+
+    for(let i = 0; i < numBlack; i++) {
+        let rand = Math.floor(Math.random() * blackCsv.length);
+        let orig = rand;
+
+        while(checkRecentB(rand) || keepSetB[rand]) {
+            rand = (rand + 1) % blackCsv.length;
+
+            if(rand === orig) {
+                throw new Error("Ran out of black cards");
+            }
+        }
+
+        keepSetB[rand] = true;
+    }
+
+    for(let i = 0; i < numWhite; i++) {
+        let rand = Math.floor(Math.random() * whiteCsv.length);
+        let orig = rand;
+
+        while(checkRecentW(rand) || keepSetW[rand]) {
+            rand = (rand + 1) % whiteCsv.length;
+
+            if(rand === orig) {
+                throw new Error("Ran out of white cards");
+            }
+        }
+
+        keepSetW[rand] = true;
+    }
+
+    blackCsv = blackCsv.filter((val, i) => {
+        if(keepSetB[i]) {
+            console.log(`Randomly choosing: ${JSON.stringify(val)}`);
+            return true;
+        }
+
+        return false;
+    });
+
+    whiteCsv = whiteCsv.filter((val, i) => {
+        if(keepSetW[i]) {
+            console.log(`Randomly choosing: ${JSON.stringify(val)}`);
+            return true;
+        }
+
+        return false;
+    });
+
+    if(!repeatBlack) {
+        for(let card of blackCsv) {
+            recentlyUsedJson.push(card.prompt);
+        }
+    }
+
+    if(!repeatWhite) {
+        for(let card of whiteCsv) {
+            recentlyUsedJson.push(card.resp);
+        }
+    }
+
+    if(!repeatBlack || !repeatWhite) {
+        await fs.writeFile('recently-used.json', JSON.stringify(recentlyUsedJson));
+    }
+
+    numCardsBlack = blackCsv.length;
+    numCardsWhite = whiteCsv.length;
 }
 
 function getLabel(deckName) {
@@ -206,7 +315,8 @@ function dedupeAll() {
     blackCsv = blackCsv.filter(card => dedupe(card.prompt));
     whiteCsv = whiteCsv.filter(card => dedupe(card.resp));
 
-    numCards = blackCsv.length + whiteCsv.length;
+    numCardsBlack = blackCsv.length;
+    numCardsWhite = whiteCsv.length;
 }
 
 function dedupe(text) {
@@ -283,17 +393,21 @@ async function addDecks() {
     await addJson('cah-decks/cah-fant-www.json');
     await addJson('cah-decks/cah-reject.json');
     await addJson('cah-decks/cah-crabs.json');
+    await addJson('cah-decks-custom/cah-doc-edit.json');
 
-    // Randomly remove cards from the previous decks, then afterwards, add decks that we want to keep in full.
-    randomRemove(300, 700);
+    // // Randomly remove cards from the previous decks, then afterwards, add decks that we want to keep in full.
+    // randomRemove(300, 700);
+
+    await randomChoose(90, 1000, false, true);
 
     await addJson('cah-decks/cah-coronavirus.json');
 
     // These extra custom decks are a bunch of inside jokes or hand-picked from already created decks, so not going to add that to the repo.
     await addJson('cah-decks-custom/cah-house.json');
-    await addJson('cah-decks-custom/cah-doc-edit.json');
 
     dedupeAll();
+
+    numCards = numCardsWhite + numCardsBlack;
 
     console.log(`${numCards} cards ${numCards > maxCards ? '(over limit)' : ''}`);
 
